@@ -119,3 +119,8 @@ STATIC_URL = 'static/'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/login/'
+import os
+
+ALLOWED_HOSTS = ['*']  # later you can restrict
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
