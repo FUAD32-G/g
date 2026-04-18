@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Workflow System</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            background: #f4f6f9;
+        }
+
+        .navbar {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .nav-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .badge {
+            background: red;
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 12px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .status-red { color: red; }
+        .status-orange { color: orange; }
+        .status-green { color: green; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2>Workflow System</h2>
+
+    <div class="nav-right">
+        <span>{{ request.user.username }}</span>
+
+        {% if notifications %}
+            <span class="badge">{{ notifications }}</span>
+        {% endif %}
+
+        <a href="{% url 'logout' %}" style="color:white;">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
+<script>
+    setTimeout(function(){
+        location.reload();
+    }, 30000); // refresh every 30 sec
+</script>

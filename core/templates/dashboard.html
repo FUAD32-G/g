@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Dashboard Overview</h2>
+
+<!-- 🔍 SEARCH -->
+<form method="get" style="margin-bottom:20px;">
+    <input type="text" name="q" placeholder="Search customer..." value="{{ request.GET.q }}">
+    <button class="btn">Search</button>
+</form>
+
+<!-- 📊 STATS -->
+<div style="display:flex; gap:15px; flex-wrap:wrap;">
+
+    <div class="card" style="flex:1;">
+        <h3>Total Cases</h3>
+        <p>{{ total_cases }}</p>
+    </div>
+
+    <div class="card" style="flex:1;">
+        <h3>Completed</h3>
+        <p>{{ completed_cases }}</p>
+    </div>
+
+    <div class="card" style="flex:1;">
+        <h3>Pending</h3>
+        <p>{{ pending_cases }}</p>
+    </div>
+
+    <div class="card" style="flex:1;">
+        <h3>Delayed</h3>
+        <p>{{ delayed_cases }}</p>
+    </div>
+
+</div>
+
+<hr>
+
+<!-- 📦 RECENT CASES -->
+<h2>Recent Cases</h2>
+
+{% for case in cases %}
+    <div class="card">
+
+        <h3>{{ case.customer_name }}</h3>
+
+        <p><strong>Product:</strong> {{ case.product_type }}</p>
+        <p><strong>Status:</strong> {{ case.status }}</p>
+
+        {% if case.deadline %}
+            {% if case.deadline < now %}
+                <p class="status-red">🔴 Delayed</p>
+            {% elif case.deadline|timeuntil < "1 day" %}
+                <p class="status-orange">🟠 Urgent</p>
+            {% else %}
+                <p class="status-green">🟢 On Time</p>
+            {% endif %}
+        {% endif %}
+
+        <!-- 📋 TASKS INSIDE CASE -->
+        <div style="margin-top:10px;">
+            <strong>Tasks:</strong>
+            <ul>
+                {% for task in case.tasks.all %}
+                    <li>
+                        {{ task.task_type }} - {{ task.status }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+{% empty %}
+    <p>No cases found</p>
+{% endfor %}
+
+<hr>
+
+<!-- 👤 STAFF PERFORMANCE -->
+<h2>Staff Performance</h2>
+
+<div style="display:flex; flex-wrap:wrap; gap:15px;">
+
+{% for p in performance %}
+    <div class="card" style="flex:1; min-width:200px;">
+        <h3>{{ p.user }}</h3>
+        <p>✅ Completed: {{ p.completed }}</p>
+        <p>⏳ Pending: {{ p.pending }}</p>
+    </div>
+{% endfor %}
+
+</div>
+
+{% endblock %}

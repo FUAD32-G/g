@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a href="{% url 'create_case' %}">
+    <button class="btn">+ New Case</button>
+</a>
+<h2>Reception Dashboard</h2>
+
+{% for task in tasks %}
+    <div class="card">
+
+        <h3>{{ task.case.customer_name }}</h3>
+
+        <p>Product: {{ task.case.product_type }}</p>
+
+        {% if task.case.deadline %}
+            {% if task.case.deadline < now %}
+                <p class="status-red">🔴 Delayed</p>
+            {% elif task.case.deadline|timeuntil < "1 day" %}
+                <p class="status-orange">🟠 Urgent</p>
+            {% else %}
+                <p class="status-green">🟢 On Time</p>
+            {% endif %}
+        {% endif %}
+
+        <a href="{% url 'complete_task' task.id %}">
+            <button class="btn">Complete Task</button>
+        </a>
+
+    </div>
+{% empty %}
+    <p>No tasks available</p>
+{% endfor %}
+
+{% endblock %}

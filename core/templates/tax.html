@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Tax Dashboard</h2>
+
+{% for task in tasks %}
+    <div class="card">
+        <strong>{{ task.case.customer_name }}</strong><br>
+        Product: {{ task.case.product_type }}
+
+        <br><br>
+
+        <a href="{% url 'complete_task' task.id %}">
+            <button class="btn">Complete</button>
+        </a>
+    </div>
+{% empty %}
+    <p>No tasks available</p>
+{% endfor %}
+
+{% endblock %}
